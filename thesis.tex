@@ -1,13 +1,10 @@
 \documentclass[a4paper, fontsize=12pt]{scrartcl}
-\usepackage{cmap} % сразу после \documentclass
+\usepackage{cmap}
 \usepackage[left=2cm,right=2cm,top=2cm,bottom=2cm]{geometry}
 \usepackage{indentfirst}
 \usepackage{setspace}
-%\onehalfspacing
 \textheight=24cm % высота текста
-
 \setlength{\parindent}{1cm}
-
 \usepackage[]{cite}
 \usepackage[T2A]{fontenc}
 \usepackage[utf8]{inputenc}
@@ -19,11 +16,8 @@
 \usepackage{subfig}
 \usepackage{color}
 \usepackage{gensymb}
- 
 \usepackage{enumitem}	
 \setlist{nolistsep} 
-
-
 \usepackage{algorithm}
 \usepackage{algpseudocode}
 \floatname{algorithm}{Алгоритм}
@@ -37,10 +31,6 @@
 \renewcommand{\algorithmicfor}{\textbf{цикл для}}
 \renewcommand{\algorithmicforall}{\textbf{цикл для всех}}
 \renewcommand{\algorithmicwhile}{\textbf{цикл пока}}
-
-
-
-
 \usepackage{hyperref}
 \usepackage [section] {placeins}
 
@@ -57,26 +47,22 @@
     \textbf{\textsc{Модификация почвенно-снежного блока климатической модели ИВМ РАН}}
     \normalsize 
     
-%    \textbf{\textit{Черненков Алексей Юрьевич$^{1, *}$, Кострыкин Сергей Владимирович$^{2-4, **}$}}
-%    
-%            $^1$Московский физико-технический институт (национальный исследовательский университет), Институтский переулок, д. 9, Долгопрудный, Московская область, 141701 Россия
-%    
-%            $^2$Институт вычислительной математики им. Г.И. Марчука РАН, ул. Губкина, д. 8, Москва, 119333 Россия
-%    
-%            $^3$Институт глобального климата и экологии им. Ю.А. Израэля, ул. Глебовская, д. 20Б, Москва, 107258 Россия
-%    
-%            $^4$Институт физики атмосферы им. А.М.Обухова РАН, Пыжевский пер., 3, Москва, 119017 Россия
-%    
-%            $^*$e-mail: \url{chernenkov.ayu@phystech.edu}
-%    
-%            $^{**}$e-mail: \url{s_kostr@mail.ru}
-%    
-
-        \textbf{\textit{Черненков Алексей Юрьевич}}
+    \textbf{\textit{Черненков Алексей Юрьевич$^{1, *}$, Кострыкин Сергей Владимирович$^{2-4, **}$, Володин Евгений Михайлович$^{2, ***}$}}
     
-        Московский физико-технический институт (национальный исследовательский университет), Институтский переулок, д. 9, Долгопрудный, Московская область, 141701 Россия
+            $^1$Московский физико-технический институт (национальный исследовательский университет), Институтский переулок, д. 9, Долгопрудный, Московская область, 141701 Россия
     
-        \url{chernenkov.ayu@phystech.edu}
+            $^2$Институт вычислительной математики им. Г.И. Марчука РАН, ул. Губкина, д. 8, Москва, 119333 Россия
+    
+            $^3$Институт глобального климата и экологии им. Ю.А. Израэля, ул. Глебовская, д. 20Б, Москва, 107258 Россия
+    
+            $^4$Институт физики атмосферы им. А.М.Обухова РАН, Пыжевский пер., 3, Москва, 119017 Россия
+    
+            $^*$e-mail: \url{chernenkov.ayu@phystech.edu}
+    
+            $^{**}$e-mail: \url{s_kostr@mail.ru}
+            
+            $^{***}$e-mail: \url{volodinev@gmail.com}
+    
 \end{center}
 
 
@@ -127,6 +113,13 @@
 Идея модификации заключается в более физичном описании процесса снеготаяния. Предполагается, что при таянии снега вода не уходит моментально на верхнюю границу почвы, а постепенно просачивается сквозь толщу снега. При этом талая вода может замерзать, отдавая тепло снежному покрову. Стоит отметить, что теперь снежный покров представляется как некоторая субстанция, состоящая из трех фракций: непосредственно снега в обычном представлении, талой вода, содержащейся в нем и перезамерзшего снега. 
 
 Процесс снеготаяния--перезамерзания реализуется с помощью \textbf{Алгоритма \ref{alg:setup}}. 
+Критическая масса воды $S_{wat}^{max}$, способная содержаться в слое снега зависит от количества снега и его пористости $\varepsilon_{sn}$. Предлагается оценивать эту массу \cite{Gusev2002} и пористость снега \cite{Stock} по следующим формулам:
+\begin{equation}
+     S_{wat}^{max} = S ~\dfrac{\varepsilon_{sn}}{1 - \varepsilon_{sn}}  \label{sys}  
+\end{equation}
+\begin{equation}
+    \varepsilon_{sn} = 0.11 \left( \dfrac{\rho_w}{\rho_{sn}} - 1 \right)  \label{sys}  
+\end{equation}
 
 \begin{algorithm}[H]
 \caption{Процессы таяния снега и перезамерзания талой воды}
@@ -150,13 +143,7 @@
 \end{algorithmic}
 \end{algorithm}
 
-Критическая масса воды $S_{wat}^{max}$, способная содержаться в слое снега зависит от количества снега и его пористости $\varepsilon_{sn}$. Предлагается оценивать эту массу \cite{Gusev2002} и пористость снега \cite{Stock} по следующим формулам:
-\begin{equation}
-     S_{wat}^{max} = S ~\dfrac{\varepsilon_{sn}}{1 - \varepsilon_{sn}}  \label{sys}  
-\end{equation}
-\begin{equation}
-    \varepsilon_{sn} = 0.11 \left( \dfrac{\rho_w}{\rho_{sn}} - 1 \right)  \label{sys}  
-\end{equation}
+
 
 Эволюцию плотности снега предлагается описывать как в модели SWAP \cite{Gusev2002, Yosida1955}:
 \begin{equation}
@@ -177,15 +164,15 @@
 Также нужно отметить, что более подробное описание почвенно- снежного блока привело к увеличению количества снега в целом. Наибольшее различие между версиями наблюдается в весенние месяцы, при этом с июля по сентябрь различия минимальны. В сравнении с данными наблюдений и реанализа суммарная масса снега в случае модифицированной версии оказывается завышенной, но, вместе с тем, описание площади, покрытой снегом, наоборот, улучшается. Заметим, полученные результаты согласуется с тенденцией к завышению массы снега при более точном описании площади покрытия в ряде климатических моделей, участвующих в CMIP6, при использовании более подробного описания снега \cite{Mudryk}.
 
 \begin{figure}[h]
-    \begin{minipage}[h]{0.48\linewidth}
-        \center{\includegraphics[width=1.1\linewidth]{Snow_Mass_R.png} \\ (а) }
+    \begin{minipage}[h]{0.49\linewidth}
+        \center{\includegraphics[width=1.1\linewidth]{Snow_depth_05_ave_1997-2002_default.png} \\ (а)}
     \end{minipage}
     \hfill
-    \begin{minipage}[h]{0.51\linewidth}
-        \center{\includegraphics[width=1.1\linewidth]{Snow_area_R.png} \\ (б) }
+    \begin{minipage}[h]{0.49\linewidth}
+        \center{\includegraphics[width=1.1\linewidth]{Snow_depth_05_ave_1997-2002_new.png} \\ (б)}
     \end{minipage}
-    \caption{Годовой ход (а) массы снега и (б) площади, покрытой им, осредненные за 1997--2002 годы по данным исходной и модифицированной версий модели, и по данным реанализа CAMS за 2003--2019 годы}
-    \label{fig:imageSn}
+    \caption{Среднемесячная водно-эквивалентная толщина слоя снега по данным (а) исходной и (б) модифицированной версий модели ИВМ (месяц -- май) }
+    \label{fig:image}
 \end{figure}
 
 
@@ -217,6 +204,43 @@ Yosida Z. et al, Physical studies on deposited snow. Thermal properties., Contri
 L. Mudryk, M. Santolaria-Otin, G. Krinner et al, Historical Northern hemisphere snow cover trends and projected changes in the CMIP6  multi-model  ensemble, The Cryosphere, 2020, Vol. 14, No. 7, P. 2495–2514.
 
 \end{thebibliography}
+
+\newpage
+
+\begin{center}
+    \Large
+    \textbf{\textsc{Modification of the soil-snow block of the climatic model of the INM RAS}}
+    \normalsize 
+    
+    \textbf{\textit{Chernenkov Alexey Yurievich$^{1, *}$, Kostrykin Sergey Vladimirovich$^{2-4, **}$, Volodin Evgeny Mikhailovich$^{2, ***}$}}
+    
+            $^1$Moscow Institute of Physics and Technology, Moscow Region, Dolgoprudny, 141701 Russia
+    
+            $^2$Marchuk Institute of Numerical Mathematics, Russian Academy of Sciences, Moscow, 119333 Russia
+    
+            $^3$ Izrael Institute of Global Climate and Ecology, Moscow, 107258 Russia
+    
+            $^4$Obukhov Institute of Atmospheric Physics, Russian Academy of Sciences, Moscow, 119017 Russia
+    
+            $^*$e-mail: \url{chernenkov.ayu@phystech.edu}
+    
+            $^{**}$e-mail: \url{s_kostr@mail.ru}
+            
+            $^{***}$e-mail: \url{volodinev@gmail.com}
+
+\end{center}
+
+Climate modeling has been actively developing in recent decades. To  describe the water cycle correctly, it is important that the models describe the seasonal snow cover correctly.
+
+During the transitional seasons, when the temperature fluctuates around zero point, the snow can melt, but part of the melt water stays inside the layer and can refreeze. Also, some time after the snowfall, the snow becomes denser. All these affect the properties of the snow cover.
+
+This paper considers the fifth version of the climate model of the INM RAS (INMCM5). Here described the changes in the soil-snow block of the model: changes of melting process and density of the snow cover,  implementation of the process of refreezing of melt water.
+
+It is assumed that when the snow melts, the water does not immediately go to the upper boundary of the soil, but seeps through the thickness of the snow. In this case, the melt water can refreeze, giving off heat to the snow cover. It is worth noting that now the snow cover is presented as a certain substance, consisting of three evenly mixed fractions: snow in the usual view, melt water contained in it, and refrozen snow. The evolution of the snow density is described as in the SWAP model. To take into account all fractions of snow, it is proposed to calculate the density of the snow layer as weighted average.
+
+To test the changes made, climate calculations were carried out in 1997--2002 with the original and modified versions of the model. It follows from the calculation results that the changes into the soil-snow block lead to a later melting of snow, and the process of snow cover formation has become more intensive. This is especially noticeable in the Arctic, on the western coast of Canada and Alaska, as well as in the Himalayas. It can be noted good according to the data of the formation and disappearance of snow cover and the territories on which it lies with the data of the CAMS Global Reanalysis (EAC4) of the European Centre for Medium-Range Weather Forecasts and observation data.
+
+Note that the result obtained can be used for a detailed description of snow metamorphism and a more accurate calculation of the snow albedo.
 
 
 \end{document}
